@@ -1,5 +1,14 @@
 <?php
 include "./includes/functions.php";
+// Количество пользователей сайта.
+$users_count = db_query("SELECT COUNT(id) FROM `users`;")->fetchColumn();
+
+// Количество ссылок в системе.
+$links_count = db_query("SELECT COUNT(`id`) FROM `links`;")->fetchColumn();
+
+// Количество переходов по ссылкам.
+$views_count = db_query("SELECT SUM(`views`) FROM `links`;")->fetchColumn();
+ob_start();
 ?>
 <!doctype html>
 <html lang="ru">
@@ -35,4 +44,3 @@ include "./includes/functions.php";
             </div>
         </nav>
     </header>
-    <?= get_url() ?>
