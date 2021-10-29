@@ -1,6 +1,5 @@
-<?php include "./includes/header.php"; ?>
 <?php
-// cl_print_r($_GET[], "\$_GET\[\]:");
+include "./includes/header.php";
 
 // http://cut-your-url/goo
 
@@ -8,23 +7,20 @@
 if (isset($_GET['url']) && !empty($_GET['url'])) {
 	$url = strtolower(trim($_GET['url']));
 
-	// cl_var_dump($url);
-
 	// Ссылка в БД, соответствующая введённой пользователем.
-	$link = db_query("SELECT * FROM `links` WHERE `short_link` = '$url';")->fetch();
+	$link = get_link_info($url);
 
 	// Если в БД нет ссылки, соответствующей введённой пользователем:
 	if (empty($link)) {
-		// echo "Такая ссылка не найдена";
 		ob_get_clean();
+		// Переход на страницу с ошибкой 404.
 		header(('Location: ' . get_url("404.php")));
 		die;
 	}
 
-	// cl_var_dump($link["long_link"], '$link["long_link"]');
-
-	db_exec("UPDATE `links` SET `views` = `views` + 1 WHERE `links`.`short_link` = '$url';");
+	update_views($url);
 	ob_get_clean();
+	// Переход по переданному URL'у.
 	header(('Location: ' . $link["long_link"]));
 	die;
 }

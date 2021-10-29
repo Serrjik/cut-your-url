@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.7.3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Oct 28, 2021 at 12:32 AM
--- Server version: 8.0.19
--- PHP Version: 7.4.4
+-- Хост: 127.0.0.1:3306
+-- Время создания: Окт 29 2021 г., 16:43
+-- Версия сервера: 5.7.19
+-- Версия PHP: 7.1.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,87 +19,83 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `cut_url`
+-- База данных: `cut_url`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `links`
+-- Структура таблицы `links`
 --
 
 CREATE TABLE `links` (
-  `id` int NOT NULL,
-  `user_id` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `long_link` varchar(250) DEFAULT NULL,
   `short_link` varchar(20) DEFAULT NULL,
-  `views` int NOT NULL DEFAULT '0'
+  `views` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `links`
+-- Дамп данных таблицы `links`
 --
 
 INSERT INTO `links` (`id`, `user_id`, `long_link`, `short_link`, `views`) VALUES
-(1, 1, 'https://yandex.ru', 'yar', 19),
-(2, 1, 'https://google.ru', 'goo', 93),
+(1, 1, 'https://yandex.ru', 'yar', 21),
+(2, 1, 'https://google.ru', 'goo', 104),
 (3, 1, 'https://google.ru', 'gooc', 19);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Структура таблицы `users`
 --
 
 CREATE TABLE `users` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `login` varchar(100) DEFAULT NULL,
   `pass` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `users`
+-- Дамп данных таблицы `users`
 --
 
 INSERT INTO `users` (`id`, `login`, `pass`) VALUES
-(1, 'login1', 'pass1'),
-(2, 'login2', 'pass2'),
-(3, 'login3', 'pass2');
+(4, 'login4', '$2y$10$B.uajbyy4HJ048GAgTfXY.8QYKMfymZpo4UPhWmdO8SaNZPqRd2Dy');
 
 --
--- Indexes for dumped tables
+-- Индексы сохранённых таблиц
 --
 
 --
--- Indexes for table `links`
+-- Индексы таблицы `links`
 --
 ALTER TABLE `links`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `short_link` (`short_link`);
 
 --
--- Indexes for table `users`
+-- Индексы таблицы `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `login` (`login`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT для сохранённых таблиц
 --
 
 --
--- AUTO_INCREMENT for table `links`
+-- AUTO_INCREMENT для таблицы `links`
 --
 ALTER TABLE `links`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

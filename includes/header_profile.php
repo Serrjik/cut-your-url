@@ -1,13 +1,6 @@
 <?php
 include "./includes/functions.php";
-// Количество пользователей сайта.
-$users_count = get_users_count();
 
-// Количество ссылок в системе.
-$links_count = get_links_count();
-
-// Количество переходов по ссылкам.
-$views_count = get_views_count();
 ob_start();
 ?>
 <!doctype html>
@@ -18,6 +11,7 @@ ob_start();
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <title><?= SITE_NAME ?></title>
 </head>
 
@@ -32,23 +26,19 @@ ob_start();
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="<?= get_url() ?>">Главная</a>
+                            <a class="nav-link" aria-current="page" href="<?= get_url() ?>">Главная</a>
                         </li>
-                        <?php if (isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id'])) { ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?= get_url("profile.php") ?>">Профиль</a>
-                            </li>
-                        <?php } ?>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="<?= get_url("profile.php") ?>">Профиль</a>
+                        </li>
                     </ul>
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="text" placeholder="Ссылка" aria-label="Ссылка">
+                        <button class="btn btn-success" type="submit"><i class="bi bi-plus-lg"></i></button>
+                    </form>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <?= cl_var_dump($_SESSION['user']['id']) ?>
-
-                            <?php if (isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id'])) { ?>
-                                <a href="<?= get_url("./includes/logout.php") ?>" class="btn btn-primary">Выйти</a>
-                            <?php } else { ?>
-                                <a href="<?= get_url("login.php") ?>" class="btn btn-primary">Войти</a>
-                            <?php } ?>
+                            <a href="<?= get_url("./includes/logout.php") ?>" class="btn btn-primary">Выйти</a>
                         </li>
                     </ul>
                 </div>
