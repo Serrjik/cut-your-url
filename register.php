@@ -22,6 +22,12 @@ if (isset($_POST['login']) && !empty($_POST['login'])) {
 	// Зарегистрировать пользователя.
 	register_user($_POST);
 }
+
+if (isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id'])) {
+	// Переход на страницу профиля пользователя.
+	header('Location: ' . get_url("profile.php"));
+	die;
+}
 ?>
 <main class="container">
 	<!-- Сообщение об успехе -->

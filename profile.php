@@ -14,6 +14,12 @@ if (isset($_SESSION["success"]) && !empty($_SESSION["success"])) {
 	$success = $_SESSION["success"];
 	$_SESSION["success"] = "";
 }
+
+if (!isset($_SESSION['user']['id'])) {
+	// Переход на страницу профиля пользователя.
+	header('Location: ' . get_url("index.php"));
+	die;
+}
 ?>
 <main class="container">
 	<!-- Сообщение об успехе -->
