@@ -1,7 +1,12 @@
 <?php
-include "./includes/header.php";
+include_once __DIR__ . "/includes/header.php";
 
-// cl_var_dump($_POST);
+// Если пользователь авторизован:
+if (isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id'])) {
+	// Переход на страницу профиля пользователя.
+	header('Location: ' . get_url("profile.php"));
+	die;
+}
 
 // Если в сессии есть сообщение о ошибке:
 $error = "";
@@ -21,12 +26,6 @@ if (isset($_SESSION["success"]) && !empty($_SESSION["success"])) {
 if (isset($_POST['login']) && !empty($_POST['login']) && isset($_POST['pass']) && !empty($_POST['pass'])) {
 	// Авторизовать пользователя.
 	login($_POST);
-}
-
-if (isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id'])) {
-	// Переход на страницу профиля пользователя.
-	header('Location: ' . get_url("profile.php"));
-	die;
 }
 ?>
 <main class="container">
@@ -49,12 +48,12 @@ if (isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id'])) {
 	<div class="row mt-5">
 		<div class="col">
 			<h2 class="text-center">Вход в личный кабинет</h2>
-			<p class="text-center">Если вы еще не зарегистрированы, то самое время <a href="register.html">зарегистрироваться</a></p>
+			<p class="text-center">Если вы еще не зарегистрированы, то самое время <a href="<?= get_url("register.php") ?>">зарегистрироваться</a></p>
 		</div>
 	</div>
 	<div class="row mt-3">
 		<div class="col-4 offset-4">
-			<form action="" method="POST">
+			<form action="" method="post">
 				<div class="mb-3">
 					<label for="login-input" class="form-label">Логин</label>
 					<input type="text" class="form-control is-valid" id="login-input" required name="login">
@@ -68,4 +67,4 @@ if (isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id'])) {
 		</div>
 	</div>
 </main>
-<?php include "./includes/footer.php"; ?>
+<?php include_once "./includes/footer.php"; ?>

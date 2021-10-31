@@ -1,10 +1,8 @@
 <?php
-include "./includes/header.php";
-
-// http://cut-your-url/goo
 
 // Если в адресную строку передан URL сайта:
 if (isset($_GET['url']) && !empty($_GET['url'])) {
+	include_once __DIR__ . "/includes/functions.php";
 	$url = strtolower(trim($_GET['url']));
 
 	// Ссылка в БД, соответствующая введённой пользователем.
@@ -24,17 +22,19 @@ if (isset($_GET['url']) && !empty($_GET['url'])) {
 	header(('Location: ' . $link["long_link"]));
 	die;
 }
+
+include_once __DIR__ . "/includes/header.php";
 ?>
-<!-- http://cut-your-url/index.php?url=goo -->
 <main class="container">
-	<div class="row mt-5">
+	<!-- Если пользователь не авторизован: -->
 	<?php if (!isset($_SESSION['user']['id'])) { ?>
-		<div class="col">
-			<h2 class="text-center">Необходимо <a href="<?= get_url("register.php") ?>">зарегистрироваться</a> или <a href="<?= get_url("login.php") ?>">войти</a> под своей учетной записью</h2>
+		<div class="row mt-5">
+			<div class="col">
+				<h2 class="text-center">Необходимо <a href="<?= get_url("register.php") ?>">зарегистрироваться</a> или <a href="<?= get_url("login.php") ?>">войти</a> под своей учетной записью</h2>
+			</div>
 		</div>
 	<?php } ?>
 
-	</div>
 	<div class="row mt-5">
 		<div class="col">
 			<h2 class="text-center">Пользователей в системе: <?= $users_count ?></h2>
@@ -51,4 +51,4 @@ if (isset($_GET['url']) && !empty($_GET['url'])) {
 		</div>
 	</div>
 </main>
-<?php include "./includes/footer.php"; ?>
+<?php include_once "./includes/footer.php"; ?>

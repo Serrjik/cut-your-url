@@ -1,5 +1,5 @@
 <?php
-include "./includes/config.php";
+include_once "config.php";
 
 function get_url($page = '') {
     return HOST . "/$page";
@@ -164,6 +164,49 @@ function login($auth_data) {
         header('Location: ' . get_url("login.php"));
         die;
     }
+}
+
+// Функция разлогинивает пользователя сайта.
+function logout() {
+    session_destroy();
+    header('Location: ' . HOST);
+}
+
+// Функция возвращает ссылки переданного пользователя.
+function get_user_links($user_id) {
+    if (empty($user_id)) {
+        return [];
+    }
+
+    return db_query("SELECT * FROM `links` WHERE `user_id` = $user_id;")->fetchAll();
+}
+
+/*
+    Функция удаляет ссылку с переданным идентификатором.
+    Если ссылку удалить не удалось, возвращает false.
+*/
+function delete_link($id) {
+    if (empty($id)) {
+        return false;
+    }
+
+    return db_query("DELETE FROM `links` WHERE `links`.`id` = $id;", true);
+}
+
+/*
+    Функция добавляет ссылку в БД.
+    Принимает идентификатор авторизованного пользователя и ссылку.
+*/
+function add_link($user_id, $link) {
+    $short_link = get_short_link();
+
+    return db_query("INSERT INTO `links` (`id`, `user_id`, `long_link`, `short_link`, `views`) VALUES (NULL, '$user_id', '$link', '$short_link', '0') ;", true);
+}
+
+// Функция возвращает короткую ссылку.
+function get_short_link($size = 6) {
+    $alphabet = "abcdefghijklmnopqrstuvwxyz1234567890-";
+    return substr(str_shuffle($alphabet), 0, $size);
 }
 
 // Функции распечатки в консоль.

@@ -1,5 +1,5 @@
 <?php
-include "./includes/functions.php";
+include_once "./includes/functions.php";
 // Количество пользователей сайта.
 $users_count = get_users_count();
 

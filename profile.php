@@ -1,5 +1,16 @@
 <?php
-include "./includes/header_profile.php";
+include_once "./includes/header_profile.php";
+
+// Если пользователь не авторизован:
+if (!isset($_SESSION['user']['id'])) {
+	// Переход на страницу профиля пользователя.
+	header('Location: ' . get_url("index.php"));
+	die;
+}
+
+// Ссылки пользователя.
+$links = get_user_links($_SESSION['user']['id']);
+cl_var_dump(empty($links));
 
 // Если в сессии есть сообщение о ошибке:
 $error = "";
@@ -13,12 +24,6 @@ $success = "";
 if (isset($_SESSION["success"]) && !empty($_SESSION["success"])) {
 	$success = $_SESSION["success"];
 	$_SESSION["success"] = "";
-}
-
-if (!isset($_SESSION['user']['id'])) {
-	// Переход на страницу профиля пользователя.
-	header('Location: ' . get_url("index.php"));
-	die;
 }
 ?>
 <main class="container">
@@ -39,6 +44,9 @@ if (!isset($_SESSION['user']['id'])) {
 	<?php } ?>
 
 	<div class="row mt-5">
+		<?php if (empty($links)) { ?>
+			У вас пока нет ссылок. Вы можете добавить ссылку в форме выше.
+		<?php } else { ?>
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -50,18 +58,21 @@ if (!isset($_SESSION['user']['id'])) {
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<th scope="row">1</th>
-					<td><a href="https://ya.ru" target="_blank">https://ya.ru</a></td>
-					<td class="short-link">http://red.loc/kjjfdh</td>
-					<td>34</td>
-					<td>
-						<a href="#" class="btn btn-primary btn-sm copy-btn" title="Скопировать в буфер" data-clipboard-text="http://red.loc/kjjfdh"><i class="bi bi-files"></i></a>
-						<a href="#" class="btn btn-warning btn-sm" title="Редактировать"><i class="bi bi-pencil"></i></a>
-						<a href="#" class="btn btn-danger btn-sm" title="Удалить"><i class="bi bi-trash"></i></a>
-					</td>
-				</tr>
-				<tr>
+				<!-- Все ссылки пользователя. -->
+				<?php foreach ($links as $key => $link) { ?>
+					<tr>
+						<th scope="row"><?= $key + 1 ?></th>
+						<td><a href="<?= $link["long_link"] ?>" target="_blank"><?= $link["long_link"] ?></a></td>
+						<td class="short-link"><?= get_url($link["short_link"]) ?></td>
+						<td><?= $link["views"] ?></td>
+						<td>
+							<a href="#" class="btn btn-primary btn-sm copy-btn" title="Скопировать в буфер" data-clipboard-text="<?= get_url($link["short_link"]) ?>"><i class="bi bi-files"></i></a>
+							<a href="<?= get_url('includes/edit.php?id=' . $link["id"]) ?>" class="btn btn-warning btn-sm" title="Редактировать"><i class="bi bi-pencil"></i></a>
+							<a href="<?= get_url('includes/delete.php?id=' . $link["id"]) ?>" class="btn btn-danger btn-sm" title="Удалить"><i class="bi bi-trash"></i></a>
+						</td>
+					</tr>
+				<?php } ?>
+				<!-- <tr>
 					<th scope="row">2</th>
 					<td><a href="https://google.ru" target="_blank">https://google.ru</a></td>
 					<td class="short-link">http://red.loc/ke05nls</td>
@@ -82,9 +93,10 @@ if (!isset($_SESSION['user']['id'])) {
 						<a href="#" class="btn btn-warning btn-sm" title="Редактировать"><i class="bi bi-pencil"></i></a>
 						<a href="#" class="btn btn-danger btn-sm" title="Удалить"><i class="bi bi-trash"></i></a>
 					</td>
-				</tr>
+				</tr> -->
 			</tbody>
 		</table>
+		<?php } ?>
 	</div>
 </main>
 <div aria-live="polite" aria-atomic="true" class="position-relative">
@@ -99,4 +111,4 @@ if (!isset($_SESSION['user']['id'])) {
 		</div>
 	</div>
 </div>
-<?php include "./includes/footer_profile.php"; ?>
+<?php include_once "./includes/footer_profile.php"; ?>

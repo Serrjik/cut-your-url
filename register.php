@@ -1,7 +1,12 @@
 <?php
-include "./includes/header.php";
+include_once "./includes/header.php";
 
-cl_var_dump($_SESSION, "\$_SESSION");
+// Если пользователь авторизован:
+if (isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id'])) {
+	// Переход на страницу профиля пользователя.
+	header('Location: ' . get_url("profile.php"));
+	die;
+}
 
 // Если в сессии есть сообщение о ошибке:
 $error = "";
@@ -21,12 +26,6 @@ if (isset($_SESSION["success"]) && !empty($_SESSION["success"])) {
 if (isset($_POST['login']) && !empty($_POST['login'])) {
 	// Зарегистрировать пользователя.
 	register_user($_POST);
-}
-
-if (isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id'])) {
-	// Переход на страницу профиля пользователя.
-	header('Location: ' . get_url("profile.php"));
-	die;
 }
 ?>
 <main class="container">
@@ -54,7 +53,7 @@ if (isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id'])) {
 	</div>
 	<div class="row mt-3">
 		<div class="col-4 offset-4">
-			<form action="" method="POST">
+			<form action="" method="post">
 				<div class="mb-3">
 					<label for="login-input" class="form-label">Логин</label>
 					<input type="text" class="form-control" id="login-input" required name="login"><!-- is-valid -->
@@ -75,4 +74,4 @@ if (isset($_SESSION['user']['id']) && !empty($_SESSION['user']['id'])) {
 		</div>
 	</div>
 </main>
-<?php include "./includes/footer.php"; ?>
+<?php include_once "./includes/footer.php"; ?>
